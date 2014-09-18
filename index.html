@@ -97,7 +97,11 @@
 	
 	</style>
 <script>
-
+  document.addEventListener("deviceready", onDeviceReady, false);
+                     function onDeviceReady() {   document.addEventListener("backbutton", backKeyDown, true);
+					 navigator.app.overrideBackbutton(true);
+					 function backKeyDown() {}
+                 }
 
 var punkte=0;
 var zaehler=1;
@@ -117,6 +121,8 @@ if(data.gegner1==localStorage.userauth){
 $('#ich p').text(data.gegner1+'/punkte:'+data.punktegeg1);
 $('.runde p').text('Runde'+data.zaehler);
 $('#gegner p').text(data.gegner2+'/punkte:'+data.punktegeg2);
+document.getElementById("play").disabled = false;
+if (data.folge==1 || data.folge==2){document.getElementById("play").disabled = true;}
 
 
 }
@@ -126,7 +132,8 @@ else if(data.gegner2==localStorage.userauth){
 $('#gegner p').text(data.gegner1+'/punkte:'+data.punktegeg1);
 $('.runde p').text('Runde'+data.zaehler);
 $('#ich p').text(data.gegner2+'/punkte:'+data.punktegeg2);
-
+document.getElementById("play").disabled = false;
+if (data.folge==0 || data.folge==3){document.getElementById("play").disabled = true;}
 
 }
 
@@ -134,6 +141,8 @@ $('.runde').attr('id', id);
 $.mobile.navigate("#gamecontent",{transition:"flip", info:"barhash"});
 
 });
+
+
 
 
 }
@@ -195,7 +204,7 @@ for (var i=0; i<data.length; i++){
   if(data[i].gegner1==localStorage.userauth && data[i].gegner2==''){
   
   var txt2 = $('<button></button>').attr('id',data[i].opponent_ID);
-   $(txt2).text('Warten auf Spieler!');
+   $(txt2).text('Beliebiger Spieler!');
    $(txt2).attr('onClick','loadgamecontainer($(this).attr("id"))');
    $('#buttoncon #gegnercon').append(txt2);
   
@@ -275,7 +284,7 @@ $.getJSON("http://hsduell2014.net84.net/findopponent.php?callback=?&user="+local
    localStorage.setItem('gegnerwarten', data.gegner1);
    
    var txt2 = $('<button></button>').attr('id',data.opponent_ID);
-   $(txt2).text('Warten auf Spieler!');
+   $(txt2).text('Beliebiger Spieler!');
    $(txt2).attr('onClick','loadgamecontainer($(this).attr("id"))');
    $('#buttoncon #gegnercon').append(txt2);
    pollinggegner(data.opponent_ID);
@@ -285,7 +294,7 @@ $.getJSON("http://hsduell2014.net84.net/findopponent.php?callback=?&user="+local
    }
    
    
-   else if(data.gegner1=='Wait'){alert('Warten Sie auf ihren Gegner');}
+   else if(data.gegner1=='Wait'){alert('Die Maximale Gegner Zahl ist ereicht');}
    
    else {
    
@@ -342,7 +351,7 @@ else if (data.Folge=='Warten'){
 function fragenkrieger(id){
 countdowncheck();
 $.getJSON("http://hsduell2014.net84.net/fragenkrieger.php?callback=?&user="+localStorage.userauth+"&pass="+localStorage.passauth+"&id="+id, function(data){
-alert(JSON.stringify(data));
+
 localStorage.setItem('fragen', JSON.stringify(data));
 for (i=0; i<data.length; i++){
 var frag=i+1;
@@ -439,6 +448,7 @@ else alert('Falsch');
 
 zaehler++;
 $.mobile.navigate("#pagefour2",{transition:"slide", info:"barhash"});
+$('#pagefour').remove();
 
 countdowncheck();
 
@@ -456,6 +466,7 @@ else alert('Falsch');
 
 zaehler++;
 $.mobile.navigate("#pagefour3",{transition:"slide", info:"barhash"});
+$('#pagefour2').remove();
 countdowncheck();
 
 }
@@ -545,8 +556,6 @@ $.mobile.navigate("#pagetwo",{transition:"slide", info:"barhash"});
 			
 	
 		</div>
-
-		
 	</div> 
 	
 	<div data-role="page" id="pagefour">
