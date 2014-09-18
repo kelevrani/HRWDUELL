@@ -3,6 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1 charset=utf-8">
+<script>
+$( document ).bind( "mobileinit", function() {
+  $.mobile.hashListeningEnabled = false;
+  $.mobile.pushStateEnabled = false;
+  $.mobile.changePage.defaults.changeHash = false;
+});
+</script>
 <link rel="stylesheet" href="jquery.mobile-1.4.3.min.css">
 <script src="jquery-2.1.1.min.js"></script>
 <script src="jquery.mobile-1.4.3.min.js"></script>
@@ -97,11 +104,7 @@
 	
 	</style>
 <script>
-  document.addEventListener("deviceready", onDeviceReady, false);
-                     function onDeviceReady() {   document.addEventListener("backbutton", backKeyDown, true);
-					 navigator.app.overrideBackbutton(true);
-					 function backKeyDown() {}
-                 }
+  
 
 var punkte=0;
 var zaehler=1;
